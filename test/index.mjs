@@ -1,4 +1,4 @@
-import { IterativeProcessor } from "../src/IterativeProcessor.mjs";
+import { IterativeProcessor } from "../index.js";
 import fs from "node:fs";
 
 let processor = new IterativeProcessor();
