@@ -33,6 +33,9 @@ export const ${const} = () => {
 
 @foreach(func)
 export const ${func} = () => {
+	@foreach(inside)
+		let ${inside} = "";
+	@endforeach
     return;
 };
 @endforeach
