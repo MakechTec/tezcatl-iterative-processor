@@ -92,7 +92,7 @@ export class IterativeProcessor{
     }
 
     read(text) {
-        let startRegex = new RegExp("(@foreach\\(.*\\))|(@endforeach)", "g");
+        let startRegex = new RegExp("(@foreach\\(.*?\\))|(@endforeach)", "g");
         let result;
         let matchesAll = [];
 

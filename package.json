@@ -1,13 +1,14 @@
 {
   "name": "@makechtec/tezcatl-iterative-processor",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "webpack",
+    "test": "node test/index.mjs prop1=value1 prop2=value2"
   },
   "repository": {
     "type": "git",
