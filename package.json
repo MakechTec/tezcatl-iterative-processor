@@ -1,6 +1,6 @@
 {
   "name": "@makechtec/tezcatl-iterative-processor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angeldomp49/tezcatl-iterative-processor.git"
+    "url": "git+https://github.com/MakechTec/tezcatl-iterative-processor.git"
   },
   "author": "makechtec",
   "license": "MIT",
