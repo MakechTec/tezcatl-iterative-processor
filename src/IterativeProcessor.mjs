@@ -1,5 +1,6 @@
 import { Pipe } from "@makechtec/pipe";
 import { Argument, CLI, Reader } from "@makechtec/tezcatl-cli";
+import {ArrayTools} from "@makechtec/array-tools";
 
 export class IterativeProcessor{
 
@@ -31,17 +32,20 @@ export class IterativeProcessor{
         let newText = "";
 
         let args = CLI.getArgumentsGroup(iterable);
+        let bags = this.createBags(args)
+                        .map(bag => {
+                            return bag.map((arg) => {
+                                let argName = arg.name.substring(0, arg.name.indexOf(".") + 1);
+                                argName = arg.name.replace(argName, "");
+                                argName = iterable + "." + argName;
+                                return new Argument(argName, arg.value);
+                            });
+                        });
 
-        args.map((arg) => {
-                return new Argument(iterable, arg.value);
-            })
-            .forEach((arg) => {
-                let insideContent = originalText.substring(lessDeep.start.endIndex, lessDeep.end.startIndex);
-                newText += Reader.changePlaceholders(insideContent, [arg]);
-            });
-
-        
-
+        bags.forEach((bag) => {
+            let insideContent = originalText.substring(lessDeep.start.endIndex, lessDeep.end.startIndex);
+            newText += Reader.changePlaceholders(insideContent, bag);
+        });
 
         let originalConditionContent = originalText.substring(lessDeep.start.startIndex, lessDeep.end.endIndex);
         let cleanText = originalText.replace(originalConditionContent, newText);
@@ -114,6 +118,12 @@ export class IterativeProcessor{
 
         return startRegex.test(text) && endRegex.test(text);
     }
+
+    createBags(args){
+        return ArrayTools.group(args, (arg) => {
+            return arg.name.substring(0, arg.name.indexOf("."));
+        });
+    }
 }
 
 class Pointer{
@@ -136,3 +146,4 @@ class Loop{
 
 export const FOREACH_STATEMENT = "@foreach\\(.*\\)";
 export const END_FOREACH_STATEMENT = "@endforeach";
+export const SEPARATOR = ".";

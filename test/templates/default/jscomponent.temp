@@ -1,2 +1,2 @@
 
-someText( @foreach(prop) ${prop} @endforeach more text)
+someText( @foreach(prop) ${prop.name} = ${prop.value} | @endforeach more text)
