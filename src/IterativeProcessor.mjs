@@ -38,20 +38,19 @@ export class IterativeProcessor{
 
         let args = CLI.getArgumentsGroup(iterable);
 
-        let bags = this.createBags(args)
-                        .map(bag => {
-                            return bag.map((arg) => {
-                                let argName = arg.name.substring(0, arg.name.indexOf(SEPARATOR) + 1);
-                                argName = arg.name.replace(argName, "");
-                                argName = iterable + SEPARATOR + argName;
-                                return new Argument(argName, arg.value);
-                            });
-                        });
-
-        bags.forEach((bag) => {
-            let insideContent = originalText.substring(lessDeep.start.endIndex, lessDeep.end.startIndex);
-            newText += Reader.changePlaceholders(insideContent, bag);
-        });
+        this.createBags(args)
+            .map(bag => {
+                return bag.map((arg) => {
+                    let argName = arg.name.substring(0, arg.name.indexOf(SEPARATOR) + 1);
+                    argName = arg.name.replace(argName, "");
+                    argName = iterable + SEPARATOR + argName;
+                    return new Argument(argName, arg.value);
+                });
+            })
+            .forEach((bag) => {
+                let insideContent = originalText.substring(lessDeep.start.endIndex, lessDeep.end.startIndex);
+                newText += Reader.changePlaceholders(insideContent, bag);
+            });
 
         let originalConditionContent = originalText.substring(lessDeep.start.startIndex, lessDeep.end.endIndex);
         let cleanText = originalText.replace(originalConditionContent, newText);
