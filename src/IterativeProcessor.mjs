@@ -1,10 +1,15 @@
 import { Pipe } from "@makechtec/pipe";
-import { Argument, CLI, Reader } from "@makechtec/tezcatl-cli";
+import { Argument, CLI, Pattern, Reader } from "@makechtec/tezcatl-cli";
 import {ArrayTools} from "@makechtec/array-tools";
 
 export class IterativeProcessor{
 
     parse(text){
+
+        if(this.isBadLoop(text)){
+            console.error("ERROR: The loop is not well formed or is not closed");
+            return "";
+        }
 
         let newText = text;
         let shouldBeResolved = this.isAnyLoop(newText);
@@ -54,9 +59,9 @@ export class IterativeProcessor{
 
     loopWithLessDeep(loops){
 
-        let minDeep = loops.map(c => c.deep).reduce((a, b) => Math.min(a, b));
-        let lessDeep = loops.find(loop => loop.deep === minDeep);
-        return lessDeep;
+        let minDeep = loops.map(loop => loop.deep)
+                            .reduce((prev, current) => Math.min(prev, current));
+        return loops.find(loop => loop.deep === minDeep);
     }
 
     createLoops(matchesAll){
@@ -96,7 +101,7 @@ export class IterativeProcessor{
     }
 
     read(text) {
-        let startRegex = new RegExp("(@foreach\\(.*?\\))|(@endforeach)", "g");
+        let startRegex = new RegExp(ANY_STATEMENT, "g");
         let result;
         let matchesAll = [];
 
@@ -113,15 +118,25 @@ export class IterativeProcessor{
     }
 
     isAnyLoop(text){
-        let startRegex = new RegExp("(@foreach\\(.*\\))", "g");
-        let endRegex = new RegExp("(@endforeach)", "g");
+        let startRegex = new RegExp(FOREACH_STATEMENT, "g");
+        let endRegex = new RegExp(END_FOREACH_STATEMENT, "g");
 
         return startRegex.test(text) && endRegex.test(text);
     }
 
+    isBadLoop(text){
+        let startRegex = new RegExp(FOREACH_STATEMENT, "g");
+        let endRegex = new RegExp(END_FOREACH_STATEMENT, "g");
+
+        let matchesStart = Pattern.countMatches(text, startRegex);
+        let matchesEnd = Pattern.countMatches(text, endRegex);
+
+        return matchesStart !== matchesEnd;
+    }
+
     createBags(args){
         return ArrayTools.group(args, (arg) => {
-            return arg.name.substring(0, arg.name.indexOf("."));
+            return arg.name.substring(0, arg.name.indexOf(SEPARATOR));
         });
     }
 }
@@ -140,10 +155,12 @@ class Loop{
     completed = false;
 
     iterableName(){
-        return this.start.content.replace("@foreach(", "").replace(")", "");
+        return this.start.content.replace("@foreach\\s*\\(", "")
+                                .replace("\\s*\\)", "");
     }
 }
 
-export const FOREACH_STATEMENT = "@foreach\\(.*\\)";
+export const FOREACH_STATEMENT = "@foreach\\s*\\(\\s*([a-z|A-Z|\\d]*)\\s*\\)";
 export const END_FOREACH_STATEMENT = "@endforeach";
+export const ANY_STATEMENT = "("+FOREACH_STATEMENT+")|("+END_FOREACH_STATEMENT+")";
 export const SEPARATOR = ".";

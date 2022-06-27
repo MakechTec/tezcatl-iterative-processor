@@ -1,6 +1,6 @@
 {
   "name": "@makechtec/tezcatl-iterative-processor",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "index.js",
   "directories": {
@@ -8,7 +8,9 @@
   },
   "scripts": {
     "compile": "webpack",
-    "test": "node test/index.mjs prop1.name=n1 prop1.value=v1 prop2.name=n2 prop2.value=v2"
+    "test": "node test/index.mjs prop1.name=n1 prop1.value=v1 prop2.name=n2 prop2.value=v2",
+    "test1": "node test/index.mjs imp1.name=React imp1.path=react",
+    "test2": "node test/index.mjs"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,7 @@
   "dependencies": {
     "@makechtec/array-tools": "^1.0.1",
     "@makechtec/pipe": "^1.0.4",
-    "@makechtec/tezcatl-cli": "^1.0.4"
+    "@makechtec/tezcatl-cli": "^1.0.11"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.17.12",
