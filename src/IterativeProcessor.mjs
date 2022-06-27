@@ -38,9 +38,6 @@ export class IterativeProcessor{
 
         let args = CLI.getArgumentsGroup(iterable);
 
-        console.log(iterable);
-        console.log(args);
-
         let bags = this.createBags(args)
                         .map(bag => {
                             return bag.map((arg) => {
