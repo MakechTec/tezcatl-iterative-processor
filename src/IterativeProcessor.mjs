@@ -14,7 +14,7 @@ export class IterativeProcessor{
         let newText = text;
         let shouldBeResolved = this.isAnyLoop(newText);
 
-        while( shouldBeResolved){
+        while(shouldBeResolved){
             
             newText = new Pipe(newText)
                         .addAction(this.read)
@@ -37,12 +37,16 @@ export class IterativeProcessor{
         let newText = "";
 
         let args = CLI.getArgumentsGroup(iterable);
+
+        console.log(iterable);
+        console.log(args);
+
         let bags = this.createBags(args)
                         .map(bag => {
                             return bag.map((arg) => {
-                                let argName = arg.name.substring(0, arg.name.indexOf(".") + 1);
+                                let argName = arg.name.substring(0, arg.name.indexOf(SEPARATOR) + 1);
                                 argName = arg.name.replace(argName, "");
-                                argName = iterable + "." + argName;
+                                argName = iterable + SEPARATOR + argName;
                                 return new Argument(argName, arg.value);
                             });
                         });
@@ -54,6 +58,7 @@ export class IterativeProcessor{
 
         let originalConditionContent = originalText.substring(lessDeep.start.startIndex, lessDeep.end.endIndex);
         let cleanText = originalText.replace(originalConditionContent, newText);
+
         return cleanText;
     }
 
@@ -155,8 +160,8 @@ class Loop{
     completed = false;
 
     iterableName(){
-        return this.start.content.replace("@foreach\\s*\\(", "")
-                                .replace("\\s*\\)", "");
+        return this.start.content.replace(new RegExp(/@foreach\s*\(/), "")
+                                .replace(new RegExp(/\s*\)/), "");
     }
 }
 
