@@ -8,7 +8,8 @@
   },
   "scripts": {
     "compile": "webpack",
-    "test": "node test/index.mjs imp1.name=React imp1.path=react"
+    "test": "node test/index.mjs imp1.name=React imp1.path=react",
+    "test2": "node test/index.mjs param1.name=React param1.type=react imp1.name=React imp1.path=react"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,7 @@
 @foreach(imp)
 import ${imp.name} from ${imp.path};
 @endforeach
+
+somemethod(@foreach(param) ${param.name} : ${param.type} @endforeach){
+    
+}

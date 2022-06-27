@@ -161,7 +161,7 @@ class Loop{
     }
 }
 
-export const FOREACH_STATEMENT = "@foreach\\s*\\(\\s*([a-z|A-Z|\\d]*)\\s*\\)";
+export const FOREACH_STATEMENT = "@foreach\\s*\\(\\s*([a-z|A-Z|\\d]*)\\s*?\\)";
 export const END_FOREACH_STATEMENT = "@endforeach";
 export const ANY_STATEMENT = "("+FOREACH_STATEMENT+")|("+END_FOREACH_STATEMENT+")";
 export const SEPARATOR = ".";
